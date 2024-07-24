@@ -19,4 +19,4 @@
 
 
 ### ロボットの外観
-<img src="https://github.com/user-attachments/assets/f2781f5a-92fd-4844-88d8-0e954cdc8162" width="100">
+<img src="https://github.com/user-attachments/assets/f2781f5a-92fd-4844-88d8-0e954cdc8162" width="500">
