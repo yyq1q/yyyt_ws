@@ -1,0 +1,5 @@
+<launch>
+    <!-- 実行するプログラム -->
+    <node name="recieve_js_pub_cmd_vel"  pkg="myagv_yyyt" type="recieve_js_pub_cmd_vel.py"/>
+    <node name="recieve_js_pub_mode_msg" pkg="myagv_yyyt" type="recieve_js_pub_mode_msg.py" />
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+    <!-- 実行するプログラム -->
+    <node name="set_goal"   pkg="myagv_yyyt" type="set_goal"/>
+    <node name="navigation" pkg="myagv_yyyt" type="navigation" />
+
+    <!-- rviz setting -->
+    <arg name="rviz_flag" default="false"/>
+    <group if="$(arg rviz_flag)">
+        <arg name="rvizconfig" default="$(find myagv_yyyt)/config/rviz/rviz.rviz"/>
+        <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)"/>
+    </group>
+</launch>
