@@ -1,0 +1,228 @@
+﻿// -*- C++ -*-
+// <rtc-template block="description">
+/*!
+ * @file  Communicator.cpp
+ * @brief ModuleDescription
+ *
+ */
+// </rtc-template>
+
+#include "Communicator.h"
+
+// Module specification
+// <rtc-template block="module_spec">
+#if RTM_MAJOR_VERSION >= 2
+static const char* const communicator_spec[] =
+#else
+static const char* communicator_spec[] =
+#endif
+  {
+    "implementation_id", "Communicator",
+    "type_name",         "Communicator",
+    "description",       "ModuleDescription",
+    "version",           "1.0.0",
+    "vendor",            "yabu",
+    "category",          "Controller",
+    "activity_type",     "PERIODIC",
+    "kind",              "DataFlowComponent",
+    "max_instance",      "1",
+    "language",          "C++",
+    "lang_type",         "compile",
+    // Configuration variables
+    "conf.default.speed_x", "0.0",
+    "conf.default.speed_r", "0.0",
+    "conf.default.stop_d", "30",
+
+    // Widget
+    "conf.__widget__.speed_x", "slider.0.01",
+    "conf.__widget__.speed_r", "slider.0.01",
+    "conf.__widget__.stop_d", "text",
+    // Constraints
+    "conf.__constraints__.speed_x", "-1.5<x<1.5",
+    "conf.__constraints__.speed_r", "-2.0<x<2.0",
+
+    "conf.__type__.speed_x", "double",
+    "conf.__type__.speed_r", "double",
+    "conf.__type__.stop_d", "int",
+
+    ""
+  };
+// </rtc-template>
+
+/*!
+ * @brief constructor
+ * @param manager Maneger Object
+ */
+Communicator::Communicator(RTC::Manager* manager)
+    // <rtc-template block="initializer">
+  : RTC::DataFlowComponentBase(manager),
+    m_inIn("in", m_in),
+    m_outOut("out", m_out)
+    // </rtc-template>
+{
+}
+
+/*!
+ * @brief destructor
+ */
+Communicator::~Communicator()
+{
+}
+
+
+
+RTC::ReturnCode_t Communicator::onInitialize()
+{
+  // Registration: InPort/OutPort/Service
+  // <rtc-template block="registration">
+  // Set InPort buffers
+  addInPort("in", m_inIn);
+  
+  // Set OutPort buffer
+  addOutPort("out", m_outOut);
+
+  
+  // Set service provider to Ports
+  
+  // Set service consumers to Ports
+  
+  // Set CORBA Service Ports
+  
+  // </rtc-template>
+
+  // <rtc-template block="bind_config">
+  // Bind variables and configuration variable
+  bindParameter("speed_x", m_speed_x, "0.0");
+  bindParameter("speed_r", m_speed_r, "0.0");
+  bindParameter("stop_d", m_stop_d, "30");
+  // </rtc-template>
+
+  
+  return RTC::RTC_OK;
+}
+
+/*
+RTC::ReturnCode_t Communicator::onFinalize()
+{
+  return RTC::RTC_OK;
+}
+*/
+
+
+//RTC::ReturnCode_t Communicator::onStartup(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t Communicator::onShutdown(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+RTC::ReturnCode_t Communicator::onActivated(RTC::UniqueId /*ec_id*/)
+{
+    //センサー値初期化
+    for (int i = 0; i < 4; i++)
+    {
+        sensor_data[i] = 0;
+    }
+  return RTC::RTC_OK;
+}
+
+
+RTC::ReturnCode_t Communicator::onDeactivated(RTC::UniqueId /*ec_id*/)
+{
+    //ロボットを停止する
+    m_out.data.vx = 0;
+    m_out.data.va = 0;
+    m_outOut.write();
+  return RTC::RTC_OK;
+}
+
+
+RTC::ReturnCode_t Communicator::onExecute(RTC::UniqueId /*ec_id*/)
+{
+    //入力データの存在確認
+    if (m_inIn.isNew())
+    {
+        //入力データ読み込み
+        m_inIn.read();
+        for (int i = 0; i < m_in.data.length(); i++)
+        {
+            //入力データ格納
+            if (i < 4)
+            {
+                sensor_data[i] = m_in.data[i];
+            }
+        }
+    }
+
+    //前進するときのみ停止するかを判定
+    if (m_speed_x > 0)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            //センサー値が設定値以上か判定
+            if (sensor_data[i] > m_stop_d)
+            {
+                //センサー値が設定値以上の場合は停止
+                m_out.data.vx = 0;
+                m_out.data.va = 0;
+                m_outOut.write();
+                return RTC::RTC_OK;
+            }
+        }
+    }
+    //設定値以上の値のセンサーが無い場合はコンフィギュレーションパラメーターの値で操作
+    m_out.data.vx = m_speed_x;
+    m_out.data.va = m_speed_r;
+    m_outOut.write();
+  return RTC::RTC_OK;
+}
+
+
+//RTC::ReturnCode_t Communicator::onAborting(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t Communicator::onError(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t Communicator::onReset(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t Communicator::onStateUpdate(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t Communicator::onRateChanged(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+
+extern "C"
+{
+ 
+  void CommunicatorInit(RTC::Manager* manager)
+  {
+    coil::Properties profile(communicator_spec);
+    manager->registerFactory(profile,
+                             RTC::Create<Communicator>,
+                             RTC::Delete<Communicator>);
+  }
+  
+}

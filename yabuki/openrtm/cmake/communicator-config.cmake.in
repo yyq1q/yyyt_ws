@@ -1,0 +1,54 @@
+# Communicator CMake config file
+#
+# This file sets the following variables:
+# Communicator_FOUND - Always TRUE.
+# Communicator_INCLUDE_DIRS - Directories containing the Communicator include files.
+# Communicator_IDL_DIRS - Directories containing the Communicator IDL files.
+# Communicator_LIBRARIES - Libraries needed to use Communicator.
+# Communicator_DEFINITIONS - Compiler flags for Communicator.
+# Communicator_VERSION - The version of Communicator found.
+# Communicator_VERSION_MAJOR - The major version of Communicator found.
+# Communicator_VERSION_MINOR - The minor version of Communicator found.
+# Communicator_VERSION_REVISION - The revision version of Communicator found.
+# Communicator_VERSION_CANDIDATE - The candidate version of Communicator found.
+
+message(STATUS "Found Communicator-@PROJECT_VERSION@")
+set(Communicator_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(Communicator_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(Communicator_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(Communicator_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(Communicator_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(Communicator_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(Communicator_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(Communicator_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(Communicator_VERSION @PROJECT_VERSION@)
+set(Communicator_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(Communicator_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(Communicator_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(Communicator_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
