@@ -11,6 +11,7 @@
   - IPhoneコントローラの作成
   - IPhoneの通信
   - SLAMの実行
+  - 経路生成
   - ROSとOpenRTMの通信
 
 - 山内
