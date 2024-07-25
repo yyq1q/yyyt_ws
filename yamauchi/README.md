@@ -1,6 +1,7 @@
-# Fuji_visualizationApp
-ラズベリーパイマウスの障害物センサーを用いた障害物除去コンポーネント(raspai2shougaibutsu)と，指令振り分けコンポーネント(controller2raspai)
-
+# raspai2shougaibutsu
+ラズベリーパイマウスの障害物センサーを用いた障害物除去コンポーネント
+# controller2raspai
+指令振り分けコンポーネント
 # 動作環境
 OpenRTM
 
