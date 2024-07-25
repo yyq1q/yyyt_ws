@@ -1,11 +1,11 @@
 # Fuji_visualizationApp
-自販機用可視化アプリ
+ラズベリーパイマウスの障害物センサーを用いた障害物除去コンポーネント(raspai2shougaibutsu)と，指令振り分けコンポーネント(controller2raspai)
 
 # 動作環境
-Processing 4.3
+OpenRTM
 
 # 使用手順
-本プログラムを実行するPCをメインハードウエアのマイコン（Follower）に接続し, プログラムを実行する.  
+Controllerコンポーネントとcontroller2raspaiを接続，
 
 ![システム構成図](https://github.com/yyq1q/yyyt_ws/blob/main/yamauchi/%E3%83%A6%E3%83%93%E3%82%AD%E3%82%BF%E3%82%B9_%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E5%9B%B3.png)
 ![システム構成図](https://github.com/yyq1q/yyyt_ws/blob/main/yamauchi/%E3%83%A6%E3%83%93%E3%82%AD%E3%82%BF%E3%82%B9_%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E5%9B%B3_2.png)
